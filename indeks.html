@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Operasi Bilangan Bulat - Garis Bilangan</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      text-align: center; 
+      margin: 30px; 
+    }
+    input, button {
+      font-size: 16px;
+      padding: 5px;
+      margin: 5px;
+    }
+    .garis {
+      position: relative;
+      width: 800px;
+      height: 80px;
+      margin: 40px auto;
+      border-top: 2px solid black;
+    }
+    .angka {
+      position: absolute;
+      top: 20px;
+      transform: translateX(-50%);
+    }
+    .panah {
+      position: absolute;
+      top: -20px;
+      height: 0;
+      border-top: 3px solid red;
+    }
+  </style>
+</head>
+<body>
+  <h2>Operasi Bilangan Bulat dengan Garis Bilangan</h2>
+  <p>Masukkan operasi, misalnya: <b>3 - 5</b> atau <b>-2 + 4</b></p>
+  
+  <input type="text" id="inputOp" placeholder="contoh: 3 - 5">
+  <button onclick="hitung()">Tampilkan</button>
+
+  <div class="garis" id="garis"></div>
+  <h3 id="hasil"></h3>
+  
+  <script>
+    const garis = document.getElementById("garis");
+
+    // Buat garis bilangan dari -10 sampai 10
+    function buatGaris() {
+      garis.innerHTML = "";
+      for (let i = -10; i <= 10; i++) {
+        let angka = document.createElement("div");
+        angka.className = "angka";
+        angka.style.left = ((i + 10) * 40) + "px";
+        angka.textContent = i;
+        garis.appendChild(angka);
+      }
+    }
+
+    buatGaris();
+
+    function hitung() {
+      buatGaris();
+      const input = document.getElementById("inputOp").value.trim();
+      let ekspresi = input.replace(/\s+/g, ""); // hapus spasi
+
+      // Cari operator (+ atau -)
+      let match = ekspresi.match(/^(-?\d+)([+-])(-?\d+)$/);
+      if (!match) {
+        document.getElementById("hasil").textContent = "Format salah! Gunakan contoh: 3 - 5";
+        return;
+      }
+
+      let a = parseInt(match[1]);
+      let op = match[2];
+      let b = parseInt(match[3]);
+
+      let hasil = (op === "+") ? (a + b) : (a - b);
+
+      // Buat panah
+      let start = a;
+      let langkah = (op === "+") ? b : -b;
+
+      let panah = document.createElement("div");
+      panah.className = "panah";
+      panah.style.left = ((start + 10) * 40) + "px";
+      panah.style.width = (langkah * 40) + "px";
+      garis.appendChild(panah);
+
+      document.getElementById("hasil").textContent = ${a} ${op} ${b} = ${hasil};
+    }
+  </script>
+</body>
+</html>
